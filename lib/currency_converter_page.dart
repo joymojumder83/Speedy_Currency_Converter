@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:phonecodes/phonecodes.dart';
 import 'package:currency_converter_pro/currency_converter_pro.dart';
 import 'package:unity_ads_plugin/unity_ads_plugin.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class SpeedyQrPage extends StatefulWidget {
   const SpeedyQrPage({super.key});
@@ -97,8 +98,8 @@ class _SpeedyQrCupertinoPageState extends State<SpeedyQrPage> {
     super.initState();
     UnityAds.init(
       gameId: defaultTargetPlatform == TargetPlatform.android
-          ? '5784874'
-          : '5784875',
+          ? "${dotenv.env["android_ads_code"]}"
+          : '${dotenv.env["ios_ads_code"]}',
       onComplete: () {
         UnityAds.load(
           placementId: 'Rewarded_Android',
