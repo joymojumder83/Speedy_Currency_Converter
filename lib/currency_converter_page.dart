@@ -51,44 +51,18 @@ class _SpeedyQrCupertinoPageState extends State<SpeedyQrPage> {
   Future<void> _convertCurrency() async {
     final double amount = double.tryParse(_myController.text) ?? 0;
     try {
-      final result = await CurrencyConverterPro().convertCurrency(
+      final _currencyConverterProPlugin = CurrencyConverterPro();
+      final result = await _currencyConverterProPlugin.convertCurrency(
         amount: amount,
         fromCurrency: fromCurrency,
         toCurrency: toCurrency,
       );
-      _adsCounter += 5;
-
-      if (_adsCounter == 10) {
-        Future.delayed(
-          Duration(seconds: 1),
-          () {
-            UnityAds.load(
-              placementId: "Interstitial_Android",
-              onComplete: (placementId) {
-                UnityAds.showVideoAd(placementId: placementId);
-              },
-            );
-          },
-        );
-      } else if (_listOfAds.contains(_adsCounter)) {
-        Future.delayed(
-          Duration(seconds: 1),
-          () {
-            UnityAds.load(
-              placementId: "Rewarded_Android",
-              onComplete: (placementId) {
-                UnityAds.showVideoAd(placementId: placementId);
-              },
-            );
-          },
-        );
-      }
       setState(() {
         _convertedAmount = result.toStringAsFixed(2);
       });
     } catch (e) {
       setState(() {
-        _convertedAmount = 'Error: $e';
+        _convertedAmount = 'Error occurred';
       });
     }
   }
@@ -96,6 +70,7 @@ class _SpeedyQrCupertinoPageState extends State<SpeedyQrPage> {
   @override
   void initState() {
     super.initState();
+
     UnityAds.init(
       gameId: defaultTargetPlatform == TargetPlatform.android
           ? "${dotenv.env["android_ads_code"]}"
@@ -132,10 +107,10 @@ class _SpeedyQrCupertinoPageState extends State<SpeedyQrPage> {
     }
 
     return Scaffold(
-      backgroundColor: Color(0xFFACFFB4),
+      backgroundColor: Theme.of(context).colorScheme.primary,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-          backgroundColor: Color(0xFF78E992),
+          backgroundColor: Theme.of(context).colorScheme.inverseSurface,
           elevation: 10.0,
           centerTitle: true,
           title: const Text(
@@ -224,7 +199,6 @@ class _SpeedyQrCupertinoPageState extends State<SpeedyQrPage> {
                           fromFlag = value.flag;
                           fromSymbol = value.currency.symbol;
                           fromCurrency = value.currency.code.toLowerCase();
-                          _convertCurrency();
                         },
                       );
                     },
@@ -253,7 +227,6 @@ class _SpeedyQrCupertinoPageState extends State<SpeedyQrPage> {
                         toSymbol = value.currency.symbol;
                         toFlag = value.flag;
                         toCurrency = value.currency.code.toLowerCase();
-                        _convertCurrency();
                       });
                     },
                     value: value.flag,
@@ -272,6 +245,32 @@ class _SpeedyQrCupertinoPageState extends State<SpeedyQrPage> {
               child: ElevatedButton(
                 onPressed: () {
                   _convertCurrency();
+                  _adsCounter += 5;
+                  if (_adsCounter == 10) {
+                    Future.delayed(
+                      Duration(seconds: 1),
+                      () {
+                        UnityAds.load(
+                          placementId: "Interstitial_Android",
+                          onComplete: (placementId) {
+                            UnityAds.showVideoAd(placementId: placementId);
+                          },
+                        );
+                      },
+                    );
+                  } else if (_listOfAds.contains(_adsCounter)) {
+                    Future.delayed(
+                      Duration(seconds: 1),
+                      () {
+                        UnityAds.load(
+                          placementId: "Rewarded_Android",
+                          onComplete: (placementId) {
+                            UnityAds.showVideoAd(placementId: placementId);
+                          },
+                        );
+                      },
+                    );
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
