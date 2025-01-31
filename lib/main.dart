@@ -18,9 +18,9 @@ class MyApp extends StatelessWidget {
       title: 'Speedy Currency Converter',
       home: SpeedyQrPage(),
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
+        colorScheme: ColorScheme.light(
           primary: const Color(0xFF78E992),
-          seedColor: const Color(0xFF76F57A),
+          secondary: const Color(0xFF61BB76),
         ),
         useMaterial3: true,
       ),

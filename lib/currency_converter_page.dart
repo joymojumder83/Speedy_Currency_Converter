@@ -110,7 +110,7 @@ class _SpeedyQrCupertinoPageState extends State<SpeedyQrPage> {
       backgroundColor: Theme.of(context).colorScheme.primary,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.inverseSurface,
+          backgroundColor: Theme.of(context).colorScheme.secondary,
           elevation: 10.0,
           centerTitle: true,
           title: const Text(
